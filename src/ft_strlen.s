@@ -10,6 +10,9 @@ _ft_strlen:
 
 loop:
     cmp [rdi + rax], 0
-    jz ret
+    jz return
     inc rax
     jmp loop
+
+return:
+    ret
