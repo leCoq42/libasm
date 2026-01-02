@@ -3,19 +3,21 @@
 
 
 section .text
-global  _ft_strcmp
+global  ft_strcmp
 
-_ft_strcmp:
+ft_strcmp:
     xor rax, rax
     xor rbx, rbx
     xor rcx, rcx
     jmp loop
 
 loop:
-    mov rax, [rdi + rcx]
-    mov rbx, [rsi + rcx]
+    mov al, [rdi + rcx]
+    mov bl, [rsi + rcx]
     cmp rax, rbx
     jne return
+    cmp al, 0
+	je return
     inc rcx
     jmp loop
 

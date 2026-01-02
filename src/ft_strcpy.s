@@ -3,23 +3,22 @@
 ; 1st arg (dst) = rdi, 2nd arg (src) = rsi
 
 section .text
-global  _ft_strcpy
+global  ft_strcpy
 
-_ft_strcpy:
+ft_strcpy:
     xor rax, rax
-    push rdi;
-    jmp loop
+    push rdi
 
 loop:
-    cmp [rsi], 0
+    cmp byte [rsi], 0
     je return
-    mov rax, [rsi]
-    mov [rdi], rax
+    mov al, [rsi]
+    mov [rdi], al
     inc rdi
     inc rsi
     jmp loop
 
 return:
-    mov [rdi], 0
+    mov byte [rdi], 0
     pop rax
     ret
