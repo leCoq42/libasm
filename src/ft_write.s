@@ -1,5 +1,5 @@
 ; write(2):
-; ssize_t write(int fd, const void buf[.count], size_t count);
+; ssize_t write(int fd, const void *buf, size_t count);
 
 section .text
 global  ft_write
@@ -9,14 +9,14 @@ ft_write:
 	mov rax, 1
 	syscall
 	test rax, rax
-	js _error
+	js .error
 	ret
 
-_error:
-    neg rax
+.error:
+	neg rax
 	push rax
 	call __errno_location wrt ..plt
 	pop rdx
-	mov [rax], rdx
+	mov [rax], edx
 	mov rax, -1
 	ret
