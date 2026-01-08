@@ -1,5 +1,5 @@
 NAME := libasm.a
-ASM_SRC := ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s #ft_read.s ft_strdup.s
+ASM_SRC := ft_strlen.s ft_strcpy.s ft_strcmp.s ft_write.s ft_read.s ft_strdup.s
 SRC_DIR := src/
 OBJ_DIR := obj/
 OBJ := $(addprefix $(OBJ_DIR), $(ASM_SRC:.s=.o))

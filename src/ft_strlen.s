@@ -7,11 +7,11 @@ section .text
 ft_strlen:
     xor rax, rax
 
-loop:
+.loop:
     cmp byte [rdi + rax], 0
-    jz return
+    jz .return
     inc rax
-    jmp loop
+    jmp .loop
 
-return:
+.return:
     ret

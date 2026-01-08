@@ -9,16 +9,15 @@ ft_strcpy:
     xor rax, rax
     push rdi
 
-loop:
-    cmp byte [rsi], 0
-    je return
+.loop:
     mov al, [rsi]
     mov [rdi], al
+	test al, al
+	jz .return
     inc rdi
     inc rsi
-    jmp loop
+    jmp .loop
 
-return:
-    mov byte [rdi], 0
+.return:
     pop rax
     ret

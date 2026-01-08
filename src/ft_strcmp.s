@@ -7,20 +7,19 @@ global  ft_strcmp
 
 ft_strcmp:
     xor rax, rax
-    xor rbx, rbx
+    xor rdx, rdx
     xor rcx, rcx
-    jmp loop
 
-loop:
+.loop:
     mov al, [rdi + rcx]
-    mov bl, [rsi + rcx]
-    cmp rax, rbx
-    jne return
-    cmp al, 0
-	je return
+    mov dl, [rsi + rcx]
+    cmp rax, rdx
+    jne .return
+    test al, al
+    jz .return
     inc rcx
-    jmp loop
+    jmp .loop
 
-return:
-    sub rax, rbx
+.return:
+    sub rax, rdx
     ret
