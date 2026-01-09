@@ -6,7 +6,7 @@ OBJ := $(addprefix $(OBJ_DIR), $(ASM_SRC:.s=.o))
 NASM := nasm
 NASMFLAGS := -f elf64
 CC := gcc
-CFLAGS := -Wall -Wextra -Werror -Ofast
+CFLAGS := -Wall -Wextra -Werror
 RM := rm -f
 AR := ar rcs
 TEST_BIN := test.out
@@ -15,6 +15,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(AR) $(NAME) $(OBJ)
+	$(CC) $(CFLAGS) main.c -L. -lasm -o $(TEST_BIN)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.s
 	@mkdir -p $(OBJ_DIR)
