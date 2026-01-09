@@ -6,7 +6,7 @@ OBJ := $(addprefix $(OBJ_DIR), $(ASM_SRC:.s=.o))
 NASM := nasm
 NASMFLAGS := -f elf64
 CC := gcc
-CFLAGS := -Wall -Wextra -Werror -no-pie
+CFLAGS := -Wall -Wextra -Werror -Ofast
 RM := rm -f
 AR := ar rcs
 TEST_BIN := test.out

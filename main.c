@@ -8,14 +8,12 @@
 
 #define BORDER "-------------------------------------\n"
 
-// ANSI Colors
 #define RED     "\033[0;31m"
 #define GREEN   "\033[0;32m"
 #define BLUE    "\033[0;34m"
 #define BOLD    "\033[1m"
 #define RESET   "\033[0m"
 
-// Test counters
 static int g_tests_passed = 0;
 static int g_tests_failed = 0;
 
@@ -33,7 +31,6 @@ void test_write();
 void test_read();
 void test_strdup();
 
-// Helper functions
 void print_header(const char *function_name) {
 	printf("\n" BORDER);
 	printf(BOLD BLUE "Testing %s" RESET "\n", function_name);
@@ -105,7 +102,6 @@ void check_strcmp_sign(int std_result, int ft_result, const char *description) {
 	}
 }
 
-// Wrapper functions for register preservation tests
 static char g_test_str[] = "test";
 static char g_test_buf[50];
 
@@ -120,7 +116,6 @@ void check_rbx_preserved(void (*func_ptr)(void), const char *description) {
 	const unsigned long canary = 0xDEADBEEFCAFEBABE;
 	unsigned long rbx_after;
 	
-	// Single asm block: set canary, call function, read result
 	__asm__ volatile (
 		"movq %[canary], %%rbx\n\t"
 		"callq *%[func]\n\t"
@@ -156,16 +151,6 @@ void print_summary() {
 	printf("=====================================\n");
 }
 
-int main() {
-	test_strlen();
-	test_strcpy();
-	test_strcmp();
-	test_write();
-	test_read();
-	test_strdup();
-	print_summary();
-	return 0;
-}
 
 void test_strlen() {
 	char *str1 = "Hello, World!";
@@ -179,7 +164,6 @@ void test_strlen() {
 	check_size(strlen(str3), ft_strlen(str3), "ft_strlen(long string)");
 	check_size(strlen(str4), ft_strlen(str4), "ft_strlen(special chars)");
 	
-	// Register preservation test
 	printf("\n  Register preservation test:\n");
 	check_rbx_preserved(wrapper_strlen, "ft_strlen");
 }
@@ -204,7 +188,6 @@ void test_strcpy() {
 	ft_strcpy(dest4, src2);
 	check_str(dest3, dest4, "ft_strcpy(dest, \"A\")");
 	
-	// Empty string test
 	char *src3 = "";
 	char dest5[50];
 	char dest6[50];
@@ -213,12 +196,10 @@ void test_strcpy() {
 	ft_strcpy(dest6, src3);
 	check_str(dest5, dest6, "ft_strcpy(dest, \"\")");
 	
-	// Return value test
 	char dest7[50];
 	char *ret = ft_strcpy(dest7, "Test");
 	check_bool(ret == dest7, "ft_strcpy returns dst pointer");
 	
-	// Register preservation test
 	printf("\n  Register preservation test:\n");
 	check_rbx_preserved(wrapper_strcpy, "ft_strcpy");
 }
@@ -238,13 +219,10 @@ void test_strcmp() {
 	check_strcmp_sign(strcmp(str2, str1), ft_strcmp(str2, str1), "ft_strcmp(\"Hello, World!\", \"Hello\")");
 	check_strcmp_sign(strcmp(str3, str3), ft_strcmp(str3, str3), "ft_strcmp(\"\", \"\")");
 	
-	// Unsigned comparison test (high ASCII)
 	check_strcmp_sign(strcmp(str4, str5), ft_strcmp(str4, str5), "ft_strcmp(\"\\xff\", \"\\x01\") - unsigned");
 	
-	// First character difference
 	check_strcmp_sign(strcmp(str6, str7), ft_strcmp(str6, str7), "ft_strcmp(\"abc\", \"bbc\") - first char diff");
 	
-	// Register preservation test
 	printf("\n  Register preservation test:\n");
 	check_rbx_preserved(wrapper_strcmp, "ft_strcmp");
 }
@@ -275,7 +253,6 @@ void test_write() {
 	check_ssize(res5, res6, "ft_write(-1, \"Hello, World!\\n\", 14) return value");
 	check_int(errno1, errno2, "ft_write(-1, \"Hello, World!\\n\", 14) errno");
 	
-	// Register preservation test
 	printf("\n  Register preservation test:\n");
 	check_rbx_preserved(wrapper_write, "ft_write");
 }
@@ -286,7 +263,6 @@ void test_read() {
 
 	print_header("ft_read");
 	
-	// Create test file
 	int fd_write = open(test_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd_write < 0) {
 		printf(RED "[SKIP]" RESET " Could not create test file for ft_read tests\n");
@@ -300,7 +276,6 @@ void test_read() {
 	}
 	close(fd_write);
 	
-	// Test 1: Read from file
 	printf("  Test 1 - Read from file:\n");
 	char buf1[50] = {0};
 	char buf2[50] = {0};
@@ -316,7 +291,6 @@ void test_read() {
 		close(fd2);
 	}
 	
-	// Test 2: Invalid file descriptor
 	printf("\n  Test 2 - Invalid fd:\n");
 	char buf3[10];
 	errno = 0;
@@ -328,7 +302,6 @@ void test_read() {
 	check_ssize(r3, r4, "ft_read(-1, buf, 10) return value");
 	check_int(errno1, errno2, "ft_read(-1, buf, 10) errno");
 	
-	// Test 3: Read 0 bytes
 	printf("\n  Test 3 - Read 0 bytes:\n");
 	int fd3 = open(test_file, O_RDONLY);
 	if (fd3 != -1) {
@@ -339,7 +312,6 @@ void test_read() {
 		close(fd3);
 	}
 	
-	// Test 4: Read from /dev/zero
 	printf("\n  Test 4 - Read from /dev/zero:\n");
 	int fd_zero = open("/dev/zero", O_RDONLY);
 	if (fd_zero != -1) {
@@ -354,10 +326,8 @@ void test_read() {
 		close(fd_zero);
 	}
 	
-	// Cleanup
 	unlink(test_file);
 	
-	// Register preservation test
 	printf("\n  Register preservation test:\n");
 	check_rbx_preserved(wrapper_read, "ft_read");
 }
@@ -365,7 +335,6 @@ void test_read() {
 void test_strdup() {
 	print_header("ft_strdup");
 	
-	// Test 1: Basic string
 	printf("  Test 1 - Basic string:\n");
 	char *str1 = "Hello, World!";
 	char *dup1 = strdup(str1);
@@ -377,7 +346,6 @@ void test_strdup() {
 	free(dup1);
 	free(ft_dup1);
 	
-	// Test 2: Empty string
 	printf("\n  Test 2 - Empty string:\n");
 	char *str2 = "";
 	char *dup2 = strdup(str2);
@@ -389,7 +357,6 @@ void test_strdup() {
 	free(dup2);
 	free(ft_dup2);
 	
-	// Test 3: Single character
 	printf("\n  Test 3 - Single character:\n");
 	char *str3 = "A";
 	char *dup3 = strdup(str3);
@@ -400,7 +367,6 @@ void test_strdup() {
 	free(dup3);
 	free(ft_dup3);
 	
-	// Test 4: Pointer independence
 	printf("\n  Test 4 - Pointer independence:\n");
 	char *str4 = "Testing independence";
 	char *ft_dup4 = ft_strdup(str4);
@@ -409,7 +375,6 @@ void test_strdup() {
 	
 	free(ft_dup4);
 	
-	// Test 5: Long string
 	printf("\n  Test 5 - Long string:\n");
 	char *str5 = "This is a very long string designed to test malloc and copy correctness with many characters. Over 100 chars here!";
 	char *dup5 = strdup(str5);
@@ -421,7 +386,17 @@ void test_strdup() {
 	free(dup5);
 	free(ft_dup5);
 	
-	// Register preservation test
 	printf("\n  Register preservation test:\n");
 	check_rbx_preserved(wrapper_strdup, "ft_strdup");
+}
+
+int main() {
+	test_strlen();
+	test_strcpy();
+	test_strcmp();
+	test_write();
+	test_read();
+	test_strdup();
+	print_summary();
+	return 0;
 }

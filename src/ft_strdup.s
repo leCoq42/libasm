@@ -1,14 +1,13 @@
 ; strdup(3):
 ; char *strdup(const char *s);
 
-
-section .text
-global  ft_strdup
 extern malloc
 extern ft_strlen
 extern ft_strcpy
 
+global  ft_strdup
 
+section .text
 ft_strdup:
 	push rbx
 	mov rbx, rdi
@@ -16,10 +15,10 @@ ft_strdup:
 
 	inc rax
 	mov rdi, rax
-	call malloc
+	call malloc wrt ..plt
 	
-	cmp rax, 0
-	je .malloc_fail
+	test rax, rax
+	js .malloc_fail
 
 	mov rsi, rbx
 	mov rdi, rax

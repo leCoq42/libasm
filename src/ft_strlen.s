@@ -1,9 +1,9 @@
 ; strlen(3):
 ; size_t strlen(const char *s);
 
-section .text
-    global  ft_strlen
+global  ft_strlen
 
+section .text
 ft_strlen:
     xor rax, rax
 

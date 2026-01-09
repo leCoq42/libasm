@@ -1,10 +1,9 @@
 ; strcmp(3):
 ; int strcmp(const char *s1, const char *s2);
 
-
-section .text
 global  ft_strcmp
 
+section .text
 ft_strcmp:
     xor rax, rax
     xor rdx, rdx
