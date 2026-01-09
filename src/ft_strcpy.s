@@ -12,7 +12,7 @@ ft_strcpy:
 .loop:
     mov al, [rsi]
     mov [rdi], al
-	test al, al
+    test al, al
 	jz .return
     inc rdi
     inc rsi
