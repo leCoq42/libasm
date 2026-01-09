@@ -1,5 +1,6 @@
 ; write(2):
 ; ssize_t write(int fd, const void *buf, size_t count);
+; 1st arg (fd) = rdi, 2nd arg (buf) = rsi, 3rd arg (count) = rdx
 
 extern  __errno_location
 

@@ -1,5 +1,6 @@
 ; strdup(3):
 ; char *strdup(const char *s);
+; 1st arg (s) = rdi
 
 extern malloc
 extern ft_strlen

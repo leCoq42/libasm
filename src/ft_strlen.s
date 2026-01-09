@@ -1,5 +1,6 @@
 ; strlen(3):
 ; size_t strlen(const char *s);
+; 1st arg (s) = rdi
 
 global  ft_strlen
 

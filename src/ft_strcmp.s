@@ -1,5 +1,6 @@
 ; strcmp(3):
 ; int strcmp(const char *s1, const char *s2);
+; 1st arg (s1) = rdi, 2nd arg (s2) = rsi
 
 global  ft_strcmp
 
