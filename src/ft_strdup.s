@@ -19,7 +19,7 @@ ft_strdup:
 	call malloc wrt ..plt
 	
 	test rax, rax
-	js .malloc_fail
+	jz .malloc_fail
 
 	mov rsi, rbx
 	mov rdi, rax
@@ -32,3 +32,5 @@ ft_strdup:
 	xor rax, rax
 	pop rbx
 	ret
+
+section .note.GNU-stack noalloc noexec nowrite progbits

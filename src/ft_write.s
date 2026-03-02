@@ -22,3 +22,5 @@ ft_write:
 	mov [rax], edx
 	mov rax, -1
 	ret
+
+section .note.GNU-stack noalloc noexec nowrite progbits

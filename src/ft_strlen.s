@@ -16,3 +16,5 @@ ft_strlen:
 
 .return:
     ret
+
+section .note.GNU-stack noalloc noexec nowrite progbits

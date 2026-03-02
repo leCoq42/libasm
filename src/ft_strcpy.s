@@ -13,7 +13,7 @@ ft_strcpy:
     mov al, [rsi]
     mov [rdi], al
     test al, al
-	jz .return
+    jz .return
     inc rdi
     inc rsi
     jmp .loop
@@ -21,3 +21,5 @@ ft_strcpy:
 .return:
     pop rax
     ret
+
+section .note.GNU-stack noalloc noexec nowrite progbits

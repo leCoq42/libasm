@@ -23,3 +23,5 @@ ft_strcmp:
 .return:
     sub rax, rdx
     ret
+
+section .note.GNU-stack noalloc noexec nowrite progbits
