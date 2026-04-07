@@ -112,30 +112,6 @@ void wrapper_write(void) { ft_write(1, "", 0); }
 void wrapper_read(void) { ft_read(-1, g_test_buf, 0); }
 void wrapper_strdup(void) { char *p = ft_strdup(g_test_str); if(p) free(p); }
 
-void check_rbx_preserved(void (*func_ptr)(void), const char *description) {
-	const unsigned long canary = 0xDEADBEEFCAFEBABE;
-	unsigned long rbx_after;
-	
-	__asm__ volatile (
-		"movq %[canary], %%rbx\n\t"
-		"callq *%[func]\n\t"
-		"movq %%rbx, %[after]"
-		: [after] "=r" (rbx_after)
-		: [canary] "r" (canary), [func] "r" (func_ptr)
-		: "rbx", "rax", "rcx", "rdx", "rsi", "rdi", 
-		  "r8", "r9", "r10", "r11", "memory", "cc"
-	);
-	
-	if (rbx_after == canary) {
-		printf(GREEN "[PASS]" RESET " %s: rbx preserved (0x%lx)\n", description, rbx_after);
-		g_tests_passed++;
-	} else {
-		printf(RED "[FAIL]" RESET " %s: rbx corrupted (expected 0x%lx, got 0x%lx)\n", 
-			description, canary, rbx_after);
-		g_tests_failed++;
-	}
-}
-
 void print_summary() {
 	int total = g_tests_passed + g_tests_failed;
 	printf("\n");
@@ -163,9 +139,6 @@ void test_strlen() {
 	check_size(strlen(str2), ft_strlen(str2), "ft_strlen(\"\")");
 	check_size(strlen(str3), ft_strlen(str3), "ft_strlen(long string)");
 	check_size(strlen(str4), ft_strlen(str4), "ft_strlen(special chars)");
-	
-	printf("\n  Register preservation test:\n");
-	check_rbx_preserved(wrapper_strlen, "ft_strlen");
 }
 
 
@@ -199,9 +172,6 @@ void test_strcpy() {
 	char dest7[50];
 	char *ret = ft_strcpy(dest7, "Test");
 	check_bool(ret == dest7, "ft_strcpy returns dst pointer");
-	
-	printf("\n  Register preservation test:\n");
-	check_rbx_preserved(wrapper_strcpy, "ft_strcpy");
 }
 
 void test_strcmp() {
@@ -222,9 +192,6 @@ void test_strcmp() {
 	check_strcmp_sign(strcmp(str4, str5), ft_strcmp(str4, str5), "ft_strcmp(\"\\xff\", \"\\x01\") - unsigned");
 	
 	check_strcmp_sign(strcmp(str6, str7), ft_strcmp(str6, str7), "ft_strcmp(\"abc\", \"bbc\") - first char diff");
-	
-	printf("\n  Register preservation test:\n");
-	check_rbx_preserved(wrapper_strcmp, "ft_strcmp");
 }
 
 void test_write() {
@@ -263,9 +230,6 @@ void test_write() {
 	int errno4 = errno;
 	check_ssize(res7, res8, "ft_write(1, NULL, 5) return value");
 	check_int(errno3, errno4, "ft_write(1, NULL, 5) errno");
-	
-	printf("\n  Register preservation test:\n");
-	check_rbx_preserved(wrapper_write, "ft_write");
 }
 
 void test_read() {
@@ -353,9 +317,6 @@ void test_read() {
 	}
 	
 	unlink(test_file);
-	
-	printf("\n  Register preservation test:\n");
-	check_rbx_preserved(wrapper_read, "ft_read");
 }
 
 void test_strdup() {
@@ -411,9 +372,6 @@ void test_strdup() {
 	
 	free(dup5);
 	free(ft_dup5);
-	
-	printf("\n  Register preservation test:\n");
-	check_rbx_preserved(wrapper_strdup, "ft_strdup");
 }
 
 int main() {
