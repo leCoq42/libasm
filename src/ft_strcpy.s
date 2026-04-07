@@ -6,20 +6,20 @@ global  ft_strcpy
 
 section .text
 ft_strcpy:
-    xor rax, rax
-    push rdi
+    xor rax, rax ; clear rax
+    push rdi ; save dst pointer on stack
 
 .loop:
-    mov al, [rsi]
-    mov [rdi], al
-    test al, al
-    jz .return
-    inc rdi
-    inc rsi
-    jmp .loop
+    mov al, [rsi] ; load byte from src into al
+    mov [rdi], al ; store byte from al into dst
+    test al, al ; performs a bitwise logical AND operation between two operands
+    jz .return ; jump if zero
+    inc rdi ; increment dst pointer
+    inc rsi ; increment src pointer
+    jmp .loop ; jump to .loop
 
 .return:
-    pop rax
-    ret
+    pop rax ; restore dst pointer into rax
+    ret ; return from function
 
 section .note.GNU-stack noalloc noexec nowrite progbits

@@ -15,14 +15,13 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(AR) $(NAME) $(OBJ)
-	$(CC) $(CFLAGS) main.c -L. -lasm -o $(TEST_BIN)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.s
 	@mkdir -p $(OBJ_DIR)
 	$(NASM) $(NASMFLAGS) $< -o $@
 
 clean:
-	$(RM) -r $(OBJ_DIR)
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
 	$(RM) $(NAME) $(TEST_BIN)

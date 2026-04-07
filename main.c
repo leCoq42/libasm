@@ -253,6 +253,17 @@ void test_write() {
 	check_ssize(res5, res6, "ft_write(-1, \"Hello, World!\\n\", 14) return value");
 	check_int(errno1, errno2, "ft_write(-1, \"Hello, World!\\n\", 14) errno");
 	
+	printf("\n  Test 4 - NULL buffer:\n");
+	void *null_ptr = NULL;
+	errno = 0;
+	ssize_t res7 = write(1, null_ptr, 5);
+	int errno3 = errno;
+	errno = 0;
+	ssize_t res8 = ft_write(1, null_ptr, 5);
+	int errno4 = errno;
+	check_ssize(res7, res8, "ft_write(1, NULL, 5) return value");
+	check_int(errno3, errno4, "ft_write(1, NULL, 5) errno");
+	
 	printf("\n  Register preservation test:\n");
 	check_rbx_preserved(wrapper_write, "ft_write");
 }
@@ -324,6 +335,21 @@ void test_read() {
 		}
 		check_bool(all_zeros, "ft_read(/dev/zero) buffer contains zeros");
 		close(fd_zero);
+	}
+	
+	printf("\n  Test 5 - NULL buffer:\n");
+	int fd4 = open(test_file, O_RDONLY);
+	if (fd4 != -1) {
+		void *null_ptr = NULL;
+		errno = 0;
+		ssize_t r8 = read(fd4, null_ptr, 5);
+		int errno3 = errno;
+		errno = 0;
+		ssize_t r9 = ft_read(fd4, null_ptr, 5);
+		int errno4 = errno;
+		check_ssize(r8, r9, "ft_read(fd, NULL, 5) return value");
+		check_int(errno3, errno4, "ft_read(fd, NULL, 5) errno");
+		close(fd4);
 	}
 	
 	unlink(test_file);
