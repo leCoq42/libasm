@@ -28,9 +28,11 @@ fclean: clean
 
 re: fclean all
 
-test: $(NAME)
-	$(CC) $(CFLAGS) main.c -L. -lasm -o $(TEST_BIN)
+test: $(TEST_BIN)
 	./$(TEST_BIN)
+
+$(TEST_BIN): $(NAME) main.c
+	$(CC) $(CFLAGS) main.c -L. -lasm -o $(TEST_BIN)
 
 test_re: fclean test
 
