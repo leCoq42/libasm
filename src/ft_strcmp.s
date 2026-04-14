@@ -8,16 +8,17 @@ section .text
 ft_strcmp:
 	xor rax, rax ; clear rax
 	xor rdx, rdx ; clear rdx
-	xor rcx, rcx ; clear rcx
 
 .loop:
-	mov al, [rdi + rcx] ; load byte from s1 into al
-	mov dl, [rsi + rcx] ; load byte from s2 into dl
-	cmp rax, rdx ; compare rax and rdx
+	mov al, [rdi] ; load byte from s1 into al
+	mov dl, [rsi] ; load byte from s2 into dl
+	cmp al, dl ; compare al and dl
 	jne .return ; jump if not equal
 	test al, al ; check if al is zero
 	jz .return ; jump if zero
-	inc rcx ; increment index
+
+	inc rdi ; increment s1 pointer
+	inc rsi ; increment s2 pointer
 	jmp .loop ; jump to .loop
 
 .return:
