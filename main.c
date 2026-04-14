@@ -178,8 +178,8 @@ void test_strcmp() {
 	char *str1 = "Hello";
 	char *str2 = "Hello, World!";
 	char *str3 = "";
-	char str4[] = {(char)0xff, '\0'};  // High ASCII
-	char str5[] = {(char)0x01, '\0'};  // Low ASCII
+	char str4[] = {(char)0xff, '\0'};
+	char str5[] = {(char)0x01, '\0'};
 	char *str6 = "abc";
 	char *str7 = "bbc";
 
